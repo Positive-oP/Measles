@@ -1,19 +1,20 @@
 //Global Variables
-int appWidth, appHeight;
+int appWidth, appHeight, smallerDimension;
 float faceX, faceY, faceDiameter;
 float backgroundX, backgroundY, backgroundWidth, backgroundHeight;
 float leftEyeX, leftEyeY, rightEyeX, rightEyeY, eyeDimater;
 float noseX1, noseY1, noseX2, noseY2, noseX3, noseY3;
 float mouthX1, mouthY1, mouthX2, mouthY2, mouthOpen, mouthReset;
-float measleX, measle, measleDiameter;
+float measleX, measleY, measleDiameter;
+color resetColour=#FFFFFF;
 //
 void setup() {
   size( 600, 400); //fullScreen;
   appWidth = width; //displayWidth
   appHeight = height; //displayHeight
   //Ternary Operator
-  int smallerDimension = (appWidth >= appHeight) ? appHeight : appWidth;
-  println("Smaller Dimension is", smallerDimension);
+  smallerDimension = (appWidth >= appHeight) ? appHeight : appWidth;
+  println("Smaller Dimension is", smallerDimension); //Started as local variable
   //
   //Population
   faceX = appWidth*1/2;
@@ -29,22 +30,20 @@ void setup() {
   rightEyeX = backgroundX+smallerDimension*3/4;
   rightEyeY = leftEyeY;
   noseX1 = faceX;
-  noseY1 = rightEyeY;
-  noseX2 = leftEyeX;
+  noseY1 = leftEyeY;
+  noseX2 = faceX;
   noseY2 = faceY;
-  noseX3 = rightEyeX;
+  noseX3 = backgroundWidth+backgroundX;
   noseY3 = faceY;
-  mouthX1 = noseX2;
+  mouthX1 = leftEyeX;
   mouthY1 = backgroundY+smallerDimension*3/4;
-  mouthX2 = noseX3;
+  mouthX2 = rightEyeX;
   mouthY2 = mouthY1;
   mouthOpen = smallerDimension*1/4;
   mouthReset = smallerDimension/smallerDimension; //1=reset
-  measleX = random( 0, appWidth );
-  measleY = random( 0, appHeight );
-  measleDiameter = random( smallerDiamension*1/100, smallerDiamension*1/30 );
   //
   //DIVs
+  rect( backgroundX, backgroundY, smallerDimension/2-sqrt(sq(smallerDimension/2)/2), smallerDimension/2-sqrt(sq(smallerDimension/2)/2) );
   ellipse( faceX, faceY, faceDiameter, faceDiameter );
   //4 Inscribed buttons on the background square not on the circle
   //Solve Isolceles leg length to find rect() width and height
@@ -55,8 +54,6 @@ void setup() {
 } //End setup
 //
 void draw() {
-  //rect( backgroundX, backgroundY, backgroundWidth, backgroundHeight ); //Circle ONLY
-  ellipse( faceX, faceY, faceDiameter, faceDiameter );
   ellipse ( leftEyeX, leftEyeY, eyeDimater, eyeDimater ); //Left Eye
   ellipse ( rightEyeX, rightEyeY, eyeDimater, eyeDimater ); //Right Eye
   triangle( noseX1, noseY1, noseX2, noseY2, noseX3, noseY3 ); //Nose
@@ -64,8 +61,14 @@ void draw() {
   line( mouthX1, mouthY1, mouthX2, mouthY2 ); //mouth
   strokeWeight(mouthReset); //1=reset
   //
-  ellipse( measleX, measle, measleDiameter, measleDiameter );
-} //End draw
+  color measleColour = color( 255, random(0,84), random(0, 103) );
+  fill(measleColour);
+  measleX = random( backgroundX, backgroundX+backgroundWidth );
+  measleY = random( backgroundY, backgroundY+backgroundHeight );
+  measleDiameter = random( smallerDimension*1/100, smallerDimension*1/30 );
+  ellipse( measleX, measleY, measleDiameter, measleDiameter );
+  fill(resetColour);
+} //End draw                                                                                                                                                                                                          
 //
 void keyPressed() {
 } //End keyPressed
